@@ -6,7 +6,15 @@ public class Taco {
     // store meats, cheeses, toppings, sauces
     // keep track of total price
 
-    // constructor: takes bread type, size, toasted
+    //PROPERTIES
+    int sizes;
+    String tortilla;
+    String meats;
+    double totalPrice;
+    boolean deepFried;
+
+
+    // constructor: takes tortilla, size,deep fried
     //   - initialize properties
     //   - set base price based on size
 
