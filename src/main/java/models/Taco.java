@@ -1,5 +1,8 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Taco {
     // store tortilla type (corn, flour, hard shell, or bowl).
     // store taco size Single Taco, 3-Taco Plate, Burrito).
@@ -35,8 +38,10 @@ public class Taco {
 //         } else {
 //             this.totalPrice = 0.0; // default fallback
 //         }
-
      }
+    List<String> cheeses = new ArrayList<>();
+    List<String> toppings = new ArrayList<>();
+    List<String> sauces = new ArrayList<>()
 
     // addMeat method:
     public void addMeat(){
