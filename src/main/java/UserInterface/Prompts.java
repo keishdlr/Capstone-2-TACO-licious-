@@ -1,13 +1,34 @@
 package UserInterface;
 
+import java.time.LocalTime;
+import java.util.Scanner;
+
 public class Prompts {
     // declare a Scanner object for reading input from the console
+    Scanner myScanner = new Scanner(System.in);
+
+    int hour = LocalTime.now().getHour();
+
+    String greeting;
+
+        if (hour >= 5 && hour < 12) {
+        greeting = "Good morning ☕🌄";
+    } else if (hour >= 12 && hour < 17) {
+        greeting = "Good afternoon ☀️";
+    } else if (hour >= 17 && hour < 21) {
+        greeting = "Good evening 🌇";
+    } else {
+        greeting = "Good night 🌙";
+    }
+        System.out.println(greeting);
 
     // constructor:
 
     // showHomeScreen:
     //   - print app title and welcome message
+    System.out.println("Welcome to the Ichimaru shop");
     //   - print:
+    System.out.println("");
     //       1) New Order
     //       0) Exit
     //   - prompt user for choice
