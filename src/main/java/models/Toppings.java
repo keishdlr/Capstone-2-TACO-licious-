@@ -3,13 +3,21 @@ package models;
 import java.util.List;
 
  //Represents a taco topping with optional premium pricing and descriptive tags.
-public class Toppings {
-    private String name;
-    private boolean isPremium;
-    private double price;
-    private List<String> tags; // e.g., "spicy", "crunchy", "vegan"
+ public class Toppings {
+     private String name;
+     private boolean isPremium;
+     private double price;
+     private ToppingType type;
+     private List<String> tags;
 
-     // Constructors
+     // Constructor
+     public Toppings(String name, boolean isPremium, double price, ToppingType type, List<String> tags) {
+         this.name = name;
+         this.isPremium = isPremium;
+         this.price = price;
+         this.type = type;
+         this.tags = tags;
+     }
 
      //regular toppings with tags
     public Toppings(String name, List<String> tags) {

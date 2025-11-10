@@ -1,19 +1,20 @@
 package models;
 
 import Utilities.TacoCan;
+import Utilities.Valuable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Taco implements TacoCan {
+public class Taco implements TacoCan, Valuable {
     // store tortilla type (corn, flour, hard shell, or bowl).
     // store taco size Single Taco, 3-Taco Plate, Burrito).
     // store meats, cheeses, toppings, sauces
     // keep track of total price
 
     //PROPERTIES
-    String size;
+    TacoSize size;
     String tortilla;
     String meats;
     String cheese;
@@ -22,14 +23,14 @@ public class Taco implements TacoCan {
     boolean deepFried;
 
     //constructor: takes tortilla, size,deep fried
-     public Taco(String size, String tortilla, String meats, double totalPrice, boolean deepFried) {
+     public Taco(TacoSize size, String tortilla, String meats, double totalPrice, boolean deepFried) {
          //   - initialize properties
          this.size = size;
          this.tortilla = tortilla;
          this.meats = meats;
          this.totalPrice = totalPrice;
          this.deepFried = deepFried;
-         this.totalPrice = size.getBasePrice; // enum logic applied here
+         this.totalPrice = size.getBasePrice(); // enum logic applied here
 
          //   - set base price based on size
          // cleaning this to improve logic and avoid typos using enum.
@@ -44,76 +45,52 @@ public class Taco implements TacoCan {
 //             this.totalPrice = 0.0; // default fallback
 //         }
      }
-    List<String> cheeses = new ArrayList<>();
-    List<String> toppings = new ArrayList<>();
-    List<String> sauces = new ArrayList<>();
+    List<Toppings> cheeses = new ArrayList<>();
+    List<Toppings> toppings = new ArrayList<>();
+    List<Toppings> sauces = new ArrayList<>();
+    List<Toppings> meats = new ArrayList<>();
 
-    // addMeat method:
-    @Override
-    public void addMeat(String meats){
-        //   - add meat(s)
-        //   - what is the price based on size and whether it's extra?
+    public void addTopping(Toppings topping) {
+        switch (topping.getType()) {
+            case MEAT -> meats.add(topping);
+            case CHEESE -> cheeses.add(topping);
+            case SAUCE -> sauces.add(topping);
+            default -> toppings.add(topping); // fallback or EXTRA
+        }
 
-    }
-
-    // addCheese method:
-    @Override
-    public void addCheese(String cheese){
-        //   - add cheese(s)
-        //   - add price depending on size and whether it's extra
-    }
-
-    // addTopping method:
-    // streams/collections for lists
-    @Override
-    public void addToppings(Toppings toppings){
-        //   - add topping(s)
-        //   - no charge
-        toppings.add(toppings);
-        if (toppings.isPremium()) {
-            totalPrice += toppings.getPrice();
+        if (topping.isPremium()) {
+            totalPrice += topping.getPrice();
         }
     }
-
-    // addSauce method:
-    @Override
-    public void addSauce(String sauce){
-        //   - add sauce(s)
-        //   - no charge
-    }
-
-
     // getPrice method:
     @Override
-    public void getPrice(double totalPrice){
+    public double getPrice(){
         //   - return current total price
+        return totalPrice;
     }
-
 
     // getSummary method:
     @Override
     public String getSummary(){
         //   - return a string with all taco details and price
-
         StringBuilder summary = new StringBuilder();
-
         // append to build by layers
             summary.append("🌮 Taco Summary:\n");
-            summary.append("- Size: ").append(size.name()).append("\n");
+            summary.append("- Size: ").append(getSize()).append("\n");
             summary.append("- Tortilla: ").append(tortilla).append("\n");
-            summary.append("- Meats: ").append(meats).append("\n");
             summary.append("- Deep Fried: ").append(deepFried ? "Yes" : "No").append("\n");
-            summary.append("- Cheeses: ").append(cheeses.isEmpty() ? "None" : String.join(", ", cheeses)).append("\n");
+            summary.append("- Cheeses: ");
+            summary.append(cheeses.isEmpty() ? "None" :
+                cheeses.stream().map(Toppings::toString).collect(Collectors.joining(", "))).append("\n");
             summary.append("- Toppings: ");
-             if (toppings.isEmpty()) {
-            summary.append("None\n");
-            } else {
-            summary.append(toppings.stream()
-                            .map(Topping::toString) // Convert each topping to its display string
-                            .collect(Collectors.joining(", "))) // Join all toppings with commas
-                    .append("\n");
-            }
-            summary.append("- Sauces: ").append(sauces.isEmpty() ? "None" : String.join(", ", sauces)).append("\n");
+            summary.append(toppings.isEmpty() ? "None" :
+                toppings.stream().map(Toppings::toString).collect(Collectors.joining(", "))).append("\n");
+            summary.append("- Sauces: ");
+            summary.append(sauces.isEmpty() ? "None" :
+                sauces.stream().map(Toppings::toString).collect(Collectors.joining(", "))).append("\n");
+            summary.append("- Meats: ");
+            summary.append(meats.isEmpty() ? "None" :
+                meats.stream().map(Toppings::toString).collect(Collectors.joining(", "))).append("\n");
             summary.append("- Base Price: $").append(String.format("%.2f", size.getBasePrice())).append("\n");
             summary.append("- Calories: ").append(size.getCalories()).append(" kcal\n");
             summary.append("- Total Price: $").append(String.format("%.2f", totalPrice)).append("\n");
@@ -121,13 +98,12 @@ public class Taco implements TacoCan {
             return summary.toString();
     }
 
-
         //getters and setters
-    public String getSize() {
+    public TacoSize getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(TacoSize size) {
         this.size = size;
     }
 
