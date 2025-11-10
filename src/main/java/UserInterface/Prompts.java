@@ -1,26 +1,10 @@
 package UserInterface;
 
-import java.time.LocalTime;
 import java.util.Scanner;
 
 public class Prompts {
     // declare a Scanner object for reading input from the console
     Scanner myScanner = new Scanner(System.in);
-
-    int hour = LocalTime.now().getHour();
-
-    String greeting;
-
-        if (hour >= 5 && hour < 12) {
-        greeting = "Good morning ☕🌄";
-    } else if (hour >= 12 && hour < 17) {
-        greeting = "Good afternoon ☀️";
-    } else if (hour >= 17 && hour < 21) {
-        greeting = "Good evening 🌇";
-    } else {
-        greeting = "Good night 🌙";
-    }
-        System.out.println(greeting);
 
     // constructor:
 
@@ -28,21 +12,64 @@ public class Prompts {
     //   - print app title and welcome message
     System.out.println("Welcome to the Ichimaru shop");
     //   - print:
-    System.out.println("");
-    //       1) New Order
-    //       0) Exit
-    //   - prompt user for choice
-    //   - return user input
+      while (true) {
+        //Display menu options:
+
+        System.out.println("--💸---Home Screen---💸--");
+        System.out.println("      1) New Order       ");
+        System.out.println("      0) Exit            ");
+
+        //       1) New Order
+        //       0) Exit
+        //   - prompt user for choice
+        //   - return user input
+
+        String selection = myScanner.nextLine().toUpperCase();
+        switch (selection) {
+            case "1":
+                // call order menu
+                break;
+            case "0":
+                System.exit(0);
+            default:
+                System.out.println("Invalid input. Try again");
+        }
+    }
+
 
     // showOrderMenu:
-    //   - print:
-    //       1) Add Sandwich
-    //       2) Add Drink
-    //       3) Add Chips
-    //       4) Checkout
-    //       0) Cancel Order
-    //   - prompt user for choice
-    //   - return user input
+      while (true) {
+        //Display menu options:
+
+        System.out.println("-----Order Menu-----");
+        System.out.println("    1) Add Sandwich       ");
+        System.out.println("    2) Add Drink          ");
+        System.out.println("    3) Add Chips          ");
+        System.out.println("    4) Checkout           ");
+        System.out.println("    0) Cancel Order       ");
+
+        String selection = myScanner.nextLine().toUpperCase();
+        switch (selection) {
+            case "1":
+                     // if D is selected then it will run add deposit method
+                break;
+            case "2":
+                     // if p is selected then it will run make payment method
+                break;
+            case "3":
+                    // if L is selected then it will run Ledger method and open the ledger screen
+                break;
+            case "4":
+                    // if X is selected then it will exit the program
+                break;
+            case "0":
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Invalid input. Try again");
+        }
+    }
+
 
     // promptForTortillaType:
     //   - print list of bread types
