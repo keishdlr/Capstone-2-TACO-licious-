@@ -1,11 +1,13 @@
 package models;
 
 import Utilities.Valuable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order implements Valuable {
     // create List for order items (taco, drinks, and chips)
     private List<Taco> tacos = new ArrayList<>();
-    private List<Drink> drinks = new ArrayList<>();
+    private List<Drinks> drinks = new ArrayList<>();
     private List<Chips> chips = new ArrayList<>();
 
     // constructor:
@@ -18,7 +20,7 @@ public class Order implements Valuable {
     }
     // addDrink method:
     //   - add drink to list
-    public void addDrink(Drink drink) {
+    public void addDrink(Drinks drink) {
         drinks.add(drink);
     }
     // addChips method:
@@ -33,7 +35,7 @@ public class Order implements Valuable {
         // getTaco, getDrinks, getChips:
         //   - return the orders items
         return tacos.stream().mapToDouble(Taco::getPrice).sum()
-                + drinks.stream().mapToDouble(Drink::getPrice).sum()
+                + drinks.stream().mapToDouble(Drinks::getPrice).sum()
                 + chips.stream().mapToDouble(Chips::getPrice).sum();
     }
     // getOrderSummary method:
