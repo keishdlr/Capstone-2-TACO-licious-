@@ -2,11 +2,11 @@ package models;
 
 import Utilities.Valuable;
 
-public class Chips extends Order implements Valuable {
+public class ChipsAndSalsa extends Order implements Valuable {
 
         private String name;
         private double price;
-        public Chips(String name, double price) {
+        public ChipsAndSalsa(String name, double price) {
             this.name = name;
             this.price = price;
         }

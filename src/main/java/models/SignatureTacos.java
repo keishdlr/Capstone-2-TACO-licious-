@@ -1,4 +1,7 @@
 package models;
 
-public class SignatureTacos {
+public class SignatureTacos extends Taco {
+    	• [ ] (Optional) Create Signature Taco subclasses
+		○ [ ] StreetTaco
+            [ ] SuperBurrito
 }

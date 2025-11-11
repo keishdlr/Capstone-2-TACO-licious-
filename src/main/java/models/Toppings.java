@@ -4,11 +4,11 @@ import java.util.List;
 
  //Represents a taco topping with optional premium pricing and descriptive tags.
  public class Toppings {
-     private String name;
-     private boolean isPremium;
-     private double price;
-     private ToppingType type;
-     private List<String> tags;
+     protected String name;
+     protected boolean isPremium;
+     protected double price;
+     protected ToppingType type;
+     protected List<String> tags;
 
      // Constructor
      public Toppings(String name, boolean isPremium, double price, ToppingType type, List<String> tags) {

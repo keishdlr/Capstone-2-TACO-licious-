@@ -8,7 +8,7 @@ public class Order implements Valuable {
     // create List for order items (taco, drinks, and chips)
     private List<Taco> tacos = new ArrayList<>();
     private List<Drinks> drinks = new ArrayList<>();
-    private List<Chips> chips = new ArrayList<>();
+    private List<ChipsAndSalsa> chips = new ArrayList<>();
 
     // constructor:
     //   - initialize the class properties
@@ -25,7 +25,7 @@ public class Order implements Valuable {
     }
     // addChips method:
     //   - add chips to list
-    public void addChips(Chips chip) {
+    public void addChips(ChipsAndSalsa chip) {
         chips.add(chip);
     }
 
@@ -36,7 +36,7 @@ public class Order implements Valuable {
         //   - return the orders items
         return tacos.stream().mapToDouble(Taco::getPrice).sum()
                 + drinks.stream().mapToDouble(Drinks::getPrice).sum()
-                + chips.stream().mapToDouble(Chips::getPrice).sum();
+                + chips.stream().mapToDouble(ChipsAndSalsa::getPrice).sum();
     }
     // getOrderSummary method:
     //   - return formatted string of all items and total
