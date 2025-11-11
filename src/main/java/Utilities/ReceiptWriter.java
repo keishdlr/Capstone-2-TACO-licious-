@@ -1,10 +1,20 @@
 package Utilities;
 
-import models.Order;
-
 public class ReceiptWriter {
     public static void saveReceipt(Order order) {
+        private static String generateTimestamp() {
+            // Create timestamp string using a formatter
+            // return that string
+
         // generate filename using current date/time (yyyyMMdd-HHmmss.txt)
+            String filename = "receipt-" + generateTimestamp() + ".txt";
+            Path path = Paths.get("src/main/resources/receipts", filename);
+            try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+                writer.write(order.getOrderSummary());
+                writer.write("\nThank you for visiting TACOlicious!");
+            } catch (IOException e) {
+                System.out.println("Error saving receipt: " + e.getMessage());
+            }
         // Format 5: 2023-09-06 12:42:20
         //DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -20,10 +30,4 @@ public class ReceiptWriter {
 
         // close BufferedWriter
         // handle IOException with error message
-    }
-
-    private static String generateTimestamp() {
-        // Create timestamp string useing a formatter
-        // return that string
-    }
-}
+}}}
