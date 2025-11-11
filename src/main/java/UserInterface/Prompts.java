@@ -71,7 +71,7 @@ public class Prompts {
     }}
 
     // promptForSize:
-    //   - ask user: "What size? (4, 8, or 12 inches)"
+    //   - ask user
     //   - return user input
     public TacoSize promptForSize() {
         System.out.println("🌮 Choose your taco size:");
@@ -95,7 +95,7 @@ public class Prompts {
     // promptForMeats:
     //   - possible loop (one or multiple meats?):
     //       - ask user to type of meat (or 'done' to finish)
-    //       - ask if they want Extra meat? (yes or no)"
+    //       - ask if they want Extra meat? (yes or no)
     //   - return list of meats and extras
     public List<Toppings> promptForMeats() {
         List<Toppings> meats = new ArrayList<>();
@@ -115,7 +115,7 @@ public class Prompts {
             String extra = myScanner.nextLine().trim().toLowerCase();
             boolean isExtra = extra.equals("yes");
 
-            double price = isExtra ? 1.50 : 0.0;
+            double price = isExtra ? 50 : 0.0;
             List<String> tags = isExtra ? List.of("extra", "premium") : List.of("standard");
 
             Toppings meat = new Toppings(input, isExtra, price, ToppingType.MEAT, tags);
