@@ -1,13 +1,14 @@
 package com.pluralsight;
 
-import UserInterface.prompts;
+import UserInterface.*;
+import models.*;
 import java.time.LocalTime;
+import java.util.*;
 
 public class TACOliciousApp {
     public static void main(String[] args) {
 
         int hour = LocalTime.now().getHour();
-
         String greeting;
 
         if (hour >= 5 && hour < 12) {
@@ -27,16 +28,6 @@ public class TACOliciousApp {
 
         System.out.println("What would you like to Order?");
         prompts.showOrderMenu();
-        prompts.promptForMeats();
-        prompts.promptForCheeses();
-
-        System.out.println("would like to remove any of the sauces?");
-        prompts.removeSauces();
-
-        System.out.println("Would you like sides and/or a drink with your meal?");
-        prompts.promptForSides();
-        prompts.promptForDrinkSize();
-        prompts.promptForDrink();
-        prompts.promptForChips();
+        prompts.promptForTaco();
         prompts.checkout();
     }}

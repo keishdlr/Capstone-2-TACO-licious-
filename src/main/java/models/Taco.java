@@ -20,6 +20,7 @@ public class Taco implements TacoCan, Valuable {
     public Taco(TacoSize size) {
         this.size = size;
         this.totalPrice = size.getBasePrice();
+        this.meats = new ArrayList<>();
     }
     public void addTopping(Toppings topping) {
         switch (topping.getType()) {

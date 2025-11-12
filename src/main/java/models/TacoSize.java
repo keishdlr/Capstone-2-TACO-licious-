@@ -11,14 +11,12 @@ package models;
         private final double basePrice;
         private final int calories;
 
-
         // Constructor for TacoSize enum.
         // @param basePrice The starting price for this taco size.
         TacoSize(double basePrice, int calories) {
             this.basePrice = basePrice;
             this.calories = calories;
         }
-
         // Gets the base price for the taco size.
         // @return The base price as a double.
         public double getBasePrice() {
@@ -28,4 +26,3 @@ package models;
             return calories;
         }
     }
-
