@@ -1,11 +1,9 @@
 package UserInterface;
 
 import java.util.*;
-import models.Toppings;
-import models.ToppingType;
-import models.TacoSize;
-import models.Taco;
-import models.Order;
+
+import models.*;
+import Utilities.*;
 
 public class prompts {
 // HOME SCREEN
@@ -70,9 +68,9 @@ Scanner myScanner = new Scanner(System.in);
     public void promptForTaco() {
         TacoSize size = promptForSize();
         Taco taco = new Taco(); // assumes Taco constructor sets base price from size
-        List<Toppings> meats = promptForMeats();
+        List<Toppings> meats = promptForMeats(size);
         for (Toppings t : meats) taco.addTopping(t);
-        List<Toppings> cheeses = promptForCheeses();
+        List<Toppings> cheeses = promptForCheeses(size);
         for (Toppings c : cheeses) taco.addTopping(c);
         List<Toppings> sauces = removeSauces();
         for (Toppings s : sauces) taco.addTopping(s);
@@ -104,7 +102,7 @@ Scanner myScanner = new Scanner(System.in);
             HashMap<Integer, String> meatMenu = new HashMap<Integer, String>();
             meatMenu.put(1, "Carnitas");
             meatMenu.put(2, "Al Pastor");
-            meatMenu.put(3, "Carne Asada");
+            meatMenu.put(3, "Carne asada");
             meatMenu.put(4, "Chicken");
             meatMenu.put(5, "Chorizo");
 
@@ -114,7 +112,7 @@ Scanner myScanner = new Scanner(System.in);
                 for (Integer k : meatMenu.keySet()) {
                     String name = meatMenu.get(k);
                     System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n", k, name,
-                            Taco.baseMeatPrice(size), Pricing.extraMeatPrice(size));
+                            Pricing.meatBasePrice(size), Pricing.meatExtraPrice(size));
                 }
                 System.out.print("> ");
                 String input = myScanner.nextLine().trim();
@@ -448,7 +446,7 @@ Scanner myScanner = new Scanner(System.in);
             while (true) {
                 String input = myScanner.nextLine().trim();
                 if (input.equals("1")) {
-                    Chips c = new Chips("Chips and salsa ", 1.50);
+                    ChipsAndSalsa c = new ChipsAndSalsa("Chips and salsa ", 1.50);
                     this.currentOrder.addChips(c);
                     System.out.println("Added: Chips and salsa");
                     return;
