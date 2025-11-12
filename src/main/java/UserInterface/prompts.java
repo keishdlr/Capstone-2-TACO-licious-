@@ -18,6 +18,7 @@ public class prompts {
             String selection = myScanner.nextLine().trim();
             switch (selection) {
                 case "1":
+                    this.currentOrder = new Order();
                     showOrderMenu();
                     break;
                 case "2":
