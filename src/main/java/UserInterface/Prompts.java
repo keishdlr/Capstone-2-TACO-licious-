@@ -3,10 +3,7 @@ package UserInterface;
 import models.TacoSize;
 import models.Toppings;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Prompts {
     // declare a Scanner object for reading input from the console
@@ -92,6 +89,7 @@ public class Prompts {
                 }
             };
         }
+
     }
     // promptForMeats:
     //   - possible loop (one or multiple meats?):
@@ -99,64 +97,50 @@ public class Prompts {
     //       - ask if they want Extra meat? (yes or no)
     //   - return list of meats and extras
     // Example price chart embedded in each menu (adjust values to your canonical chart)
-    public List<Toppings> promptForMeats() {
+    public List<Toppings> promptForMeats(TacoSize size) {
         List<Toppings> meats = new ArrayList<>();
-        // Choices: name -> price when extra (base meat price is 0, extra applies)
-        // If you want base meat premium (e.g., steak charged even if not extra) change price handling
-        Map<Integer, String> meatNames = Map.of(
-                1, "Carnitas",
-                2, "Al Pastor",
-                3, "Carne Asada",
-                4, "Chicken",
-                5, "Chorizo"
-        );
-        Map<String, Double> meatExtraPrice = Map.of(
-                "Carnitas", 1.50,
-                "Al Pastor", 1.50,
-                "Carne Asada", 1.50,
-                "Chicken", 1.50,
-                "Chorizo", 1.50
-        );
-
         System.out.println("🥩 Choose meats (type number or name). Type 'done' when finished.");
+
+        LinkedHashMap<Integer, String> meatMenu = new LinkedHashMap<>();
+        meatMenu.put(1, "Carnitas");
+        meatMenu.put(2, "Al Pastor");
+        meatMenu.put(3, "Carne Asada");
+        meatMenu.put(4, "Chicken");
+        meatMenu.put(5, "Chorizo");
+
         while (true) {
             System.out.println("-- Meats --");
-            meatNames.forEach((k, v) -> System.out.printf("%d) %s (+$%.2f if extra)%n", k, v, meatExtraPrice.get(v)));
+            meatMenu.forEach((k, v) -> System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n",
+                    k, v, meatBasePrice(size), meatExtraPrice(size)));
             System.out.print("> ");
             String input = myScanner.nextLine().trim();
             if (input.equalsIgnoreCase("done")) break;
-            if (input.isEmpty()) {
-                System.out.println("Please enter a choice.");
-                continue;
-            }
+            if (input.isEmpty()) { System.out.println("Please enter a choice."); continue; }
 
             String chosenName = null;
             try {
                 int idx = Integer.parseInt(input);
-                chosenName = meatNames.get(idx);
+                chosenName = meatMenu.get(idx);
             } catch (NumberFormatException ignored) {
-                // try match by name
-                for (String name : meatNames.values()) {
-                    if (name.equalsIgnoreCase(input)) {
-                        chosenName = name;
-                        break;
-                    }
+                for (String name : meatMenu.values()) {
+                    if (name.equalsIgnoreCase(input)) { chosenName = name; break; }
                 }
             }
-            if (chosenName == null) {
-                System.out.println("Invalid choice. Try again.");
+            if (chosenName == null) { System.out.println("Invalid choice. Try again."); continue; }
+
+            System.out.print("Add " + chosenName + " (yes/no)? ");
+            String addResp = myScanner.nextLine().trim();
+            if (!addResp.equalsIgnoreCase("yes") && !addResp.equalsIgnoreCase("y")) {
+                System.out.println("Skipped.");
                 continue;
             }
 
-            // ask for extra
             System.out.print("Extra " + chosenName + " (yes/no)? ");
             String extraResp = myScanner.nextLine().trim();
             boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
 
-            double price = isExtra ? meatExtraPrice.getOrDefault(chosenName, 1.50) : 0.0;
-            List<String> tags = new ArrayList<>();
-            tags.add("meat");
-            if (isExtra) tags.add("extra");
+            double price = meatBasePrice(size) + (isExtra ? meatExtraPrice(size) : 0.0);
+            List<String> tags = new ArrayList<>(); tags.add("meat"); if (isExtra) tags.add("extra");
 
             Toppings topping = new Toppings(chosenName, isExtra, price, ToppingType.MEAT, tags);
             meats.add(topping);
@@ -164,71 +148,43 @@ public class Prompts {
         }
         return meats;
     }
-
-    public List<Toppings> promptForCheeses() {
+    }
+    // prompt for cheese
+    public List<Toppings> promptForCheeses(TacoSize size) {
         List<Toppings> cheeses = new ArrayList<>();
-        Map<Integer, String> cheeseNames = Map.of(
-                1, "Queso Fresco",
-                2, "Cheddar",
-                3, "Monterey Jack",
-                4, "Cotija",
-                5, "Vegan Cheese"
-                6, "Oaxaca"
-        );
-        Map<String, Double> cheeseExtraPrice = Map.of(
-                "Queso Fresco", 0.75,
-                "Cheddar", 0.75,
-                "Monterey Jack", 0.75,
-                "Cotija", 0.75,
-                "Vegan Cheese", 1.00
-                "oaxaca", .30
-        );
+        LinkedHashMap<Integer, String> cheeseMenu = new LinkedHashMap<>();
+        cheeseMenu.put(1, "Queso Fresco");
+        cheeseMenu.put(2, "Cheddar");
+        cheeseMenu.put(3, "Monterey Jack");
+        cheeseMenu.put(4, "Cotija");
+        cheeseMenu.put(5, "Vegan Cheese");
 
         System.out.println("🧀 Choose cheeses (type number or name). Type 'done' when finished.");
         while (true) {
-            System.out.println("-- Cheeses --");
-            cheeseNames.forEach((k, v) -> System.out.printf("%d) %s (+$%.2f for extra)%n", k, v, cheeseExtraPrice.get(v)));
+            cheeseMenu.forEach((k, v) -> System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n",
+                    k, v, cheeseBasePrice(size), cheeseExtraPrice(size)));
             System.out.print("> ");
             String input = myScanner.nextLine().trim();
             if (input.equalsIgnoreCase("done")) break;
-            if (input.isEmpty()) {
-                System.out.println("Please enter a choice.");
-                continue;
+            if (input.isEmpty()) { System.out.println("Please enter a choice."); continue; }
+
+            String chosen = null;
+            try { chosen = cheeseMenu.get(Integer.parseInt(input)); }
+            catch (Exception ignored) {
+                for (String name : cheeseMenu.values()) if (name.equalsIgnoreCase(input)) { chosen = name; break; }
             }
+            if (chosen == null) { System.out.println("Invalid choice. Try again."); continue; }
 
-            String chosenName = null;
-            try {
-                int idx = Integer.parseInt(input);
-                chosenName = cheeseNames.get(idx);
-            } catch (NumberFormatException ignored) {
-                for (String name : cheeseNames.values()) {
-                    if (name.equalsIgnoreCase(input)) {
-                        chosenName = name;
-                        break;
-                    }
-                }
-            }
-            if (chosenName == null) {
-                System.out.println("Invalid choice. Try again.");
-                continue;
-            }
-
-            System.out.print("Extra " + chosenName + " (yes/no)? ");
-            String extraResp = myScanner.nextLine().trim();
-            boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
-
-            double price = isExtra ? cheeseExtraPrice.getOrDefault(chosenName, 0.30) : 0.0;
-            List<String> tags = new ArrayList<>();
-            tags.add("cheese");
-            if (isExtra) tags.add("extra");
-
-            Toppings topping = new Toppings(chosenName, isExtra, price, ToppingType.CHEESE, tags);
-            cheeses.add(topping);
-            System.out.println("Added: " + topping);
+            System.out.print("Extra " + chosen + " (yes/no)? ");
+            boolean isExtra = myScanner.nextLine().trim().equalsIgnoreCase("yes");
+            double price = cheeseBasePrice(size) + (isExtra ? cheeseExtraPrice(size) : 0.0);
+            List<String> tags = new ArrayList<>(); tags.add("cheese"); if (isExtra) tags.add("extra");
+            cheeses.add(new Toppings(chosen, isExtra, price, ToppingType.CHEESE, tags));
+            System.out.println("Added: " + cheeses.get(cheeses.size()-1));
         }
         return cheeses;
     }
-
+    // prompt for sauce
     public List<Toppings> promptForSauces() {
         List<Toppings> sauces = new ArrayList<>();
         Map<Integer, String> sauceNames = Map.of(
@@ -284,61 +240,22 @@ public class Prompts {
         }
         return sauces;
     }
+    // prompt for deletion of toppings if desired.
 
-    public List<Toppings> promptForSides() {
-        List<Toppings> sides = new ArrayList<>();
-        // Using Toppings for sides keeps types unified; alternatively create Side class if preferred
-        Map<Integer, String> sideNames = Map.of(
-                1, "Chips (small)",
-                2, "Chips (large)",
-                3, "Mexican Rice",
-                4, "Refried Beans",
-                5, "Soda"
-        );
-        Map<String, Double> sidePrices = Map.of(
-                "Chips (small)", 1.50,
-                "Chips (large)", 2.50,
-                "Mexican Rice", 2.00,
-                "Refried Beans", 2.00,
-                "Soda", 1.75
-        );
 
-        System.out.println("🍟 Choose sides (type number or name). Type 'done' when finished.");
-        while (true) {
-            System.out.println("-- Sides --");
-            sideNames.forEach((k, v) -> System.out.printf("%d) %s ($%.2f)%n", k, v, sidePrices.get(v)));
-            System.out.print("> ");
-            String input = myScanner.nextLine().trim();
-            if (input.equalsIgnoreCase("done")) break;
-            if (input.isEmpty()) {
-                System.out.println("Please enter a choice.");
-                continue;
-            }
 
-            String chosenName = null;
-            try {
-                int idx = Integer.parseInt(input);
-                chosenName = sideNames.get(idx);
-            } catch (NumberFormatException ignored) {
-                for (String name : sideNames.values()) {
-                    if (name.equalsIgnoreCase(input)) {
-                        chosenName = name;
-                        break;
-                    }
+        return sides;
+        // prompt for drinks
+        public String promptForDrinkSize() {
+            System.out.println("🥤 Choose drink size: 1) Small ($2.00) 2) Medium ($2.50) 3) Large ($3.00)");
+            while (true) {
+                String input = myScanner.nextLine().trim();
+                switch (input) {
+                    case "1", "small" -> { return "Small"; }
+                    case "2", "medium" -> { return "Medium"; }
+                    case "3", "large" -> { return "Large"; }
+                    default -> System.out.println("Invalid choice. Try again.");
                 }
             }
-            if (chosenName == null) {
-                System.out.println("Invalid choice. Try again.");
-                continue;
-            }
-
-            double price = sidePrices.getOrDefault(chosenName, 0.0);
-            List<String> tags = List.of("side");
-
-            // Use EXTRA type for sides or create a Side-specific model; here we reuse ToppingType.EXTRA
-            Toppings side = new Toppings(chosenName, false, price, ToppingType.EXTRA, new ArrayList<>(tags));
-            sides.add(side);
-            System.out.println("Added: " + side);
         }
-        return sides;
     }}
