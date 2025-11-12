@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class Taco implements TacoCan, Valuable {
     //properties
-    private String tortilla;
+    private Tortilla tortilla;
     private TacoSize size;
     private List<Toppings> meats = new ArrayList<>();
     private List<Toppings> cheeses = new ArrayList<>();
@@ -31,15 +31,19 @@ public class Taco implements TacoCan, Valuable {
         toppings.add(topping); // always add to master list
         totalPrice += topping.getPrice();
     }
+
     //getters and setters
-    public String getTortilla() { return tortilla; }
+    public Tortilla getTortilla() { return tortilla; }
     public TacoSize getSize() { return size; }
     public double getTotalPrice() { return totalPrice; }
     public boolean isDeepFried() { return deepFried; }
-    public void setTortilla(String tortilla) { this.tortilla = tortilla; }
     public void setDeepFried(boolean deepFried) { this.deepFried = deepFried; }
 
     //contracts from TacoCan
+    @Override
+    public void setTortilla(Tortilla tortilla){
+          this.tortilla = tortilla;
+    }
     @Override
     public void addMeat(Toppings meat) {
         meats.add(meat);

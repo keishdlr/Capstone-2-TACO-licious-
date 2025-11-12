@@ -10,7 +10,7 @@ public enum SignatureMenuOptions {
         return switch (this) {
             case STREET_TACOS -> {
                 Taco taco = new Taco(TacoSize.THREE);
-                taco.setTortilla("Corn");
+                taco.setTortilla(Tortilla.CORN);
                 taco.addMeat(new Toppings("Carne Asada", Pricing.meatBasePrice(taco.getSize()), ToppingType.MEAT));
                 taco.addTopping(new Toppings("Onions", 0.25, ToppingType.EXTRA));
                 taco.addTopping(new Toppings("Cilantro", 0.25, ToppingType.EXTRA));
@@ -20,7 +20,7 @@ public enum SignatureMenuOptions {
             }
             case SUPER_BURRITO -> {
                 Taco taco = new Taco(TacoSize.BURRITO);
-                taco.setTortilla("Flour");
+                taco.setTortilla(Tortilla.FLOUR);
                 taco.addMeat(new Toppings("Carnitas", Pricing.meatBasePrice(taco.getSize()), ToppingType.MEAT));
                 taco.addCheese(new Toppings("Cheddar", 0.75, ToppingType.CHEESE));
                 taco.addTopping(new Toppings("Pico de Gallo", 0.50, ToppingType.EXTRA));

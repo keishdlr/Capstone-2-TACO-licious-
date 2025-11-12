@@ -1,11 +1,15 @@
 package Utilities;
 
 import models.Toppings;
+import models.Tortilla;
 
 public interface TacoCan {
 
     double getPrice();           // Every taco must be able to report a price
     String getSummary();         // Every taco must have a receipt
+
+    //contracts from TacoCan
+    void setTortilla(Tortilla tortilla);
 
     void addMeat(Toppings meat);
     void addCheese(Toppings cheese);

@@ -72,8 +72,8 @@ public class prompts {
     public void promptForTaco() {
         TacoSize size = promptForSize();
         Taco taco = new Taco(size); // assuming constructor uses size
-        String tortilla = promptForTortillaType();
-        taco.addTopping(new Toppings(tortilla, 0.0, ToppingType.TORTILLA)); // add tortilla
+        Tortilla tortilla = promptForTortillaType();
+        taco.setTortilla(tortilla);
         List<Toppings> meats = promptForMeats(size);
         for (Toppings t : meats) taco.addTopping(t);
         List<Toppings> cheeses = promptForCheeses(size);
@@ -106,7 +106,7 @@ public class prompts {
             System.out.println("Invalid choice. Enter 1, 2, or 3.");
         }
     }
-    public String promptForTortillaType() {
+    public Tortilla promptForTortillaType() {
         System.out.println("🌯 Choose your tortilla type:");
         System.out.println("1) Corn");
         System.out.println("2) Flour");
@@ -117,16 +117,16 @@ public class prompts {
             switch (input) {
                 case "1":
                 case "corn":
-                    return "Corn";
+                    return Tortilla.CORN;
                 case "2":
                 case "flour":
-                    return "Flour";
+                    return Tortilla.FLOUR;
                 case "3":
                 case "hard shell":
-                    return "Hard Shell";
+                    return Tortilla.HARD_SHELL;
                 case "4":
                 case "bowl":
-                    return "Bowl";
+                    return Tortilla.BOWL;
                 default:
                     System.out.println("Invalid choice. Please enter 1–4 or type the name.");
             }
