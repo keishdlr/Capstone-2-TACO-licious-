@@ -2,7 +2,7 @@ package models;
 
 import Utilities.Valuable;
 
-public class ChipsAndSalsa extends Order implements Valuable {
+public class ChipsAndSalsa implements Valuable {
 
         private String name;
         private double price;

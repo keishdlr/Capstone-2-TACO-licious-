@@ -2,7 +2,7 @@ package models;
 
 import Utilities.Valuable;
 
-public class Drinks extends Order implements Valuable {
+public class Drinks implements Valuable {
 
     private String name;
     private double price;
