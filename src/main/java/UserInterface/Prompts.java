@@ -13,7 +13,7 @@ import models.Taco;
 import models.Order;
 
     // HOME SCREEN
-    public static void showHomeScreen() {
+    public  void showHomeScreen() {
         while (true) {
             System.out.println("--💸---Home Screen---💸--");
             System.out.println("      1) New Order       ");
@@ -35,7 +35,7 @@ import models.Order;
     }
 
     // ORDER MENU
-    public static void showOrderMenu() {
+    public  void showOrderMenu() {
         while (true) {
             System.out.println("-----Order Menu-----");
             System.out.println("    1) Add Taco           ");
@@ -85,7 +85,7 @@ import models.Order;
     }
 
     // PROMPT FOR MEATS (uses HashMap for menu)
-    public static List<Toppings> promptForMeats() {
+    public  List<Toppings> promptForMeats() {
         List<Toppings> meats = new ArrayList<>();
         HashMap<Integer, String> meatMenu = new HashMap<Integer, String>();
         meatMenu.put(1, "Carnitas");
@@ -95,11 +95,67 @@ import models.Order;
         meatMenu.put(5, "Chorizo");
 
         System.out.println("🥩 Choose meats (type number or name). Type 'done' when finished.");
-        Toppings.meatLogic();
-    }
+            while (true) {
+                System.out.println("\n-- Meats --");
+                for (Integer k : meatMenu.keySet()) {
+                    String name = meatMenu.get(k);
+                    System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n", k, name,
+                            Taco.baseMeatPrice(size), Pricing.extraMeatPrice(size));
+                }
+                System.out.print("> ");
+                String input = myScanner.nextLine().trim();
+                if (input.equalsIgnoreCase("done")) break;
+                if (input.isEmpty()) {
+                    System.out.println("Please enter a choice.");
+                    continue;
+                }
+
+                String chosenName = null;
+                // try parse number
+                try {
+                    int idx = Integer.parseInt(input);
+                    chosenName = meatMenu.get(idx);
+                } catch (NumberFormatException e) {
+                    // match by name
+                    for (Integer k : meatMenu.keySet()) {
+                        String v = meatMenu.get(k);
+                        if (v.equalsIgnoreCase(input)) {
+                            chosenName = v;
+                            break;
+                        }
+                    }
+                }
+
+                if (chosenName == null) {
+                    System.out.println("Invalid choice. Try again.");
+                    continue;
+                }
+
+                System.out.print("Add " + chosenName + " (yes/no)? ");
+                String addResp = myScanner.nextLine().trim();
+                if (!addResp.equalsIgnoreCase("yes") && !addResp.equalsIgnoreCase("y")) {
+                    System.out.println("Skipped.");
+                    continue;
+                }
+
+                System.out.print("Extra " + chosenName + " (yes/no)? ");
+                String extraResp = myScanner.nextLine().trim();
+                boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
+
+                double price = Pricing.baseMeatPrice(size) + (isExtra ? Pricing.extraMeatPrice(size) : 0.0);
+                List<String> tags = new ArrayList<String>();
+                tags.add("meat");
+                if (isExtra) tags.add("extra");
+
+                Toppings topping = new Toppings(chosenName, isExtra, price, ToppingType.MEAT, tags);
+                meats.add(topping);
+                System.out.println("Added: " + chosenName + " ($" + String.format("%.2f", price) + ")");
+            }
+            return meats;
+        }
 
     // PROMPT FOR CHEESES. using hashmap also for the cheese
-    public static List<Toppings> promptForCheeses() {
+    public  List<Toppings> promptForCheeses() {
         List<Toppings> cheeses = new ArrayList<>();
         HashMap<Integer, String> cheeseMenu = new HashMap<Integer, String>();
         cheeseMenu.put(1, "Queso Fresco");
@@ -109,11 +165,65 @@ import models.Order;
         cheeseMenu.put(5, "Vegan Cheese");
 
         System.out.println("🧀 Choose cheeses (type number or name). Type 'done' when finished.");
-        Toppings.cheeseLogic();
-    }
+            while (true) {
+                System.out.println("\n-- Cheeses --");
+                for (Integer k : cheeseMenu.keySet()) {
+                    String name = cheeseMenu.get(k);
+                    System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n", k, name,
+                            Pricing.baseCheesePrice(size), Pricing.extraCheesePrice(size));
+                }
+                System.out.print("> ");
+                String input = myScanner.nextLine().trim();
+                if (input.equalsIgnoreCase("done")) break;
+                if (input.isEmpty()) {
+                    System.out.println("Please enter a choice.");
+                    continue;
+                }
+
+                String chosen = null;
+                try {
+                    int idx = Integer.parseInt(input);
+                    chosen = cheeseMenu.get(idx);
+                } catch (NumberFormatException e) {
+                    for (Integer k : cheeseMenu.keySet()) {
+                        String v = cheeseMenu.get(k);
+                        if (v.equalsIgnoreCase(input)) {
+                            chosen = v;
+                            break;
+                        }
+                    }
+                }
+
+                if (chosen == null) {
+                    System.out.println("Invalid choice. Try again.");
+                    continue;
+                }
+
+                System.out.print("Add " + chosen + " (yes/no)? ");
+                String addResp = myScanner.nextLine().trim();
+                if (!addResp.equalsIgnoreCase("yes") && !addResp.equalsIgnoreCase("y")) {
+                    System.out.println("Skipped.");
+                    continue;
+                }
+
+                System.out.print("Extra " + chosen + " (yes/no)? ");
+                String extraResp = myScanner.nextLine().trim();
+                boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
+
+                double price = Pricing.baseCheesePrice(size) + (isExtra ? Pricing.extraCheesePrice(size) : 0.0);
+                List<String> tags = new ArrayList<String>();
+                tags.add("cheese");
+                if (isExtra) tags.add("extra");
+
+                Toppings topping = new Toppings(chosen, isExtra, price, ToppingType.CHEESE, tags);
+                cheeses.add(topping);
+                System.out.println("Added: " + chosen + " ($" + String.format("%.2f", price) + ")");
+            }
+            return cheeses;
+        }
 
     // PROMPT to remove sauces
-    public static List<Toppings> removeSauces() {
+    public  List<Toppings> removeSauces() {
         List<Toppings> sauces = new ArrayList<Toppings>();
         HashMap<Integer, String> sauceMenu = new HashMap<Integer, String>();
         sauceMenu.put(1, "Salsa Verde");
@@ -242,7 +352,7 @@ import models.Order;
     }
 
     // PROMPT FOR SIDES (uses Toppings as side items)
-    public static List<Toppings> promptForSides() {
+    public List<Toppings> promptForSides() {
         List<Toppings> sides = new ArrayList<Toppings>();
         HashMap<Integer, String> sideMenu = new HashMap<Integer, String>();
         sideMenu.put(1, "Chips");
@@ -296,7 +406,7 @@ import models.Order;
     }
 
     // PROMPT FOR DRINK SIZE
-    public static String promptForDrinkSize() {
+    public String promptForDrinkSize() {
         System.out.println("🥤 Choose drink size: 1) Small ($2.00) 2) Medium ($2.50) 3) Large ($3.00)");
         while (true) {
             String input = myScanner.nextLine().trim();
@@ -308,7 +418,7 @@ import models.Order;
     }
 
     // prompt for drink and add to order
-    public static void promptForDrink() {
+    public  void promptForDrink() {
         String sizeLabel = promptForDrinkSize();
         System.out.print("Enter drink name (e.g., Soda): ");
         String name = myScanner.nextLine().trim();
@@ -319,7 +429,7 @@ import models.Order;
     }
 
     // prompt for chips and Salsa add to order
-    public static void promptForChips() {
+    public  void promptForChips() {
         System.out.println("Choose chips size: 1) Small ($1.50) 2) Large ($2.50)");
         while (true) {
             String input = myScanner.nextLine().trim();
