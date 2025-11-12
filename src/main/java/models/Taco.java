@@ -17,8 +17,6 @@ public class Taco implements TacoCan, Valuable {
     TacoSize size;
     String tortilla;
     String meats;
-    String cheese;
-    String sauce;
     double totalPrice;
     boolean deepFried;
 
@@ -52,10 +50,10 @@ public class Taco implements TacoCan, Valuable {
 
     public void addTopping(Toppings topping) {
         switch (topping.getType()) {
-            case MEAT -> meats.add(topping);
-            case CHEESE -> cheeses.add(topping);
-            case SAUCE -> sauces.add(topping);
-            default -> toppings.add(topping); // fallback or EXTRA
+            case MEAT -> addMeat(topping);
+            case CHEESE -> addCheese(topping);
+            case SAUCE -> addSauce(topping);
+            default -> addTopping(topping); // fallback or EXTRA
         }
 
         if (topping.isPremium()) {
