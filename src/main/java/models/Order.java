@@ -10,6 +10,16 @@ public class Order implements Valuable {
     private List<Drink> drinks = new ArrayList<>();
     private List<ChipsAndSalsa> chips = new ArrayList<>();
 
+    public List<Taco> getTacos() {
+        return tacos;
+    }
+    public List<Drink> getDrinks() {
+        return drinks;
+    }
+    public List<ChipsAndSalsa> getChips() {
+        return chips;
+    }
+
     // constructor:
     //   - initialize the class properties
     public Order() {
