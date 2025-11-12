@@ -1,11 +1,7 @@
 package com.pluralsight;
 
-import UserInterface.Prompts;
-import models.Order;
-import models.TacoSize;
-
+import UserInterface.prompts;
 import java.time.LocalTime;
-import java.util.Scanner;
 
 public class TACOliciousApp {
     public static void main(String[] args) {
@@ -26,24 +22,21 @@ public class TACOliciousApp {
         System.out.println(greeting);
 
         System.out.println("Welcome to the Seven Serpent shop");
-        public Prompts() {
-            this.currentOrder = new Order();
-        }
-        public class Prompts {
-            private Scanner myScanner = new Scanner(System.in);
-            private Order currentOrder;
-        }
-
-        Prompts.showHomeScreen();
+        prompts prompts = new prompts();  //  create an instance
+        prompts.showHomeScreen();         //  call the entry method
 
         System.out.println("What would you like to Order?");
-        Prompts.showOrderMenu();
-        Prompts.promptForMeats();
-        Prompts.promptForCheeses();
-        Prompts.removeSauces();
-        Prompts.promptForSides();
-        Prompts.promptForDrinkSize();
-        Prompts.promptForDrink();
-        Prompts.promptForChips();
-        Prompts.checkout();
+        prompts.showOrderMenu();
+        prompts.promptForMeats();
+        prompts.promptForCheeses();
+
+        System.out.println("would like to remove any of the sauces?");
+        prompts.removeSauces();
+
+        System.out.println("Would you like sides and/or a drink with your meal?");
+        prompts.promptForSides();
+        prompts.promptForDrinkSize();
+        prompts.promptForDrink();
+        prompts.promptForChips();
+        prompts.checkout();
     }}
