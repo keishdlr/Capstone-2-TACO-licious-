@@ -1,8 +1,11 @@
 package com.pluralsight;
 
 import UserInterface.Prompts;
+import models.Order;
+import models.TacoSize;
 
 import java.time.LocalTime;
+import java.util.Scanner;
 
 public class TACOliciousApp {
     public static void main(String[] args) {
@@ -22,7 +25,25 @@ public class TACOliciousApp {
         }
         System.out.println(greeting);
 
-    }
-    Prompts prompts = new Prompts();
-    prompts.Prompts();
-}
+        System.out.println("Welcome to the Seven Serpent shop");
+        public Prompts() {
+            this.currentOrder = new Order();
+        }
+        public class Prompts {
+            private Scanner myScanner = new Scanner(System.in);
+            private Order currentOrder;
+        }
+
+        Prompts.showHomeScreen();
+
+        System.out.println("What would you like to Order?");
+        Prompts.showOrderMenu();
+        Prompts.promptForMeats();
+        Prompts.promptForCheeses();
+        Prompts.removeSauces();
+        Prompts.promptForSides();
+        Prompts.promptForDrinkSize();
+        Prompts.promptForDrink();
+        Prompts.promptForChips();
+        Prompts.checkout();
+    }}

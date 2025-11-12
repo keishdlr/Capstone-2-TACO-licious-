@@ -2,7 +2,7 @@ package Utilities;
 
 public class ReceiptWriter {
     public static void saveReceipt(Order order) {
-        private static String generateTimestamp() {
+          String generateTimestamp;
             // Create timestamp string using a formatter
             // return that string
 
@@ -30,4 +30,4 @@ public class ReceiptWriter {
 
         // close BufferedWriter
         // handle IOException with error message
-}}}
+}}

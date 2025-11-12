@@ -1,158 +1,107 @@
 package UserInterface;
 
-import models.TacoSize;
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
 import models.Toppings;
+import models.ToppingType;
+import models.TacoSize;
+import models.Taco;
+import models.Order;
 
-import java.util.*;
+    // HOME SCREEN
+    public static void showHomeScreen() {
+        while (true) {
+            System.out.println("--💸---Home Screen---💸--");
+            System.out.println("      1) New Order       ");
+            System.out.println("      0) Exit            ");
 
-public class Prompts {
-    // declare a Scanner object for reading input from the console
-    Scanner myScanner = new Scanner(System.in);
-
-    // showHomeScreen:
-    //   - print app title and welcome message
-    System.out.println("Welcome to the Seven Serpent Taco shop");
-    //   - print:
-      while(true){
-        //Display menu options:
-        //   - prompt user for choice
-        //   - return user input
-        System.out.println("---🌮🐍---Home Screen---🌮🐍---");
-        System.out.println("          1) New Order       ");
-        System.out.println("          0) Exit            ");
-
-        String selection = myScanner.nextLine().toUpperCase();
-        switch (selection) {
-            case "1":
-                // call order menu
-                showOrderMenu
-                break;
-            case "0":
-                System.exit(0);
-            default:
-                System.out.println("Invalid input. Try again");
+            String selection = myScanner.nextLine().trim();
+            switch (selection) {
+                case "1":
+                    showOrderMenu();
+                    break;
+                case "2":
+                    System.out.println("Come again!");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid input. Try again!");
+            }
         }
     }
 
-    // showOrderMenu:
-    public static showOrderMenu(){
-      while (true) {
-        //Display menu options:
-        System.out.println("--🗒️---Order Menu--🗒️---");
-        System.out.println("      1) Add Taco           ");
-        System.out.println("      2) Add Drink          ");
-        System.out.println("      3) Add Chips & Salsa  ");
-        System.out.println("      4) Checkout           ");
-        System.out.println("      0) Cancel Order       ");
+    // ORDER MENU
+    public static void showOrderMenu() {
+        while (true) {
+            System.out.println("-----Order Menu-----");
+            System.out.println("    1) Add Taco           ");
+            System.out.println("    2) Add Drink          ");
+            System.out.println("    3) Add Chips          ");
+            System.out.println("    4) Checkout           ");
+            System.out.println("    0) Cancel Order       ");
 
-        String selection = myScanner.nextLine().toUpperCase();
-        switch (selection) {
-            case "1":
-                     // taco screen, shell-size-toppings-deepfried -back to menu
-                break;
-            case "2":
-                     // drink size and flavor
-                break;
-            case "3":
-                    // salsa type
-                break;
-            case "4":
-                    //display order details and price-confirm(create receipt file /delete(delete back to home screen)
-                break;
-            case "0":
-                System.exit(0);
-                break;
-            default:
-                System.out.println("Invalid input. Try again");
+            String selection = myScanner.nextLine().trim();
+            switch (selection){
+                case "1":
+                    promptForTaco();
+                    break;
+                case "2":
+                    promptForDrink();
+                    break;
+                case "3":
+                    promptForChips();
+                    break;
+                case "4":
+                    checkout();
+                    break;
+                case "0":
+                    System.out.println("Order Cancelled");
+                    this.currentOrder = new Order();
+                    return;
+                default:
+                    System.out.println("Invalid input. Try again");
+            }
         }
-    }}
+    }
 
-    // promptForSize:
-    //   - ask user
-    //   - return user input
+    // PROMPT SIZE
     public TacoSize promptForSize() {
         System.out.println("🌮 Choose your taco size:");
-        System.out.println("   1) Single Taco");
-        System.out.println("   2) 3-Taco Plate");
-        System.out.println("   3) Burrito");
+        System.out.println("1) Single Taco ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.SINGLE)) + ")");
+        System.out.println("2) 3-Taco Plate ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.THREE)) + ")");
+        System.out.println("3) Burrito ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.BURRITO)) + ")");
 
         while (true) {
             String input = myScanner.nextLine().trim();
-            return switch (input) {
-                //choice calls to enum class TacoSize
-                case "1" -> TacoSize.SINGLE;
-                case "2" -> TacoSize.THREE;
-                case "3" -> TacoSize.BURRITO;
-                default -> {
-                    System.out.println("Invalid choice. Try again.");
-                    yield null; //
-                }
-            };
+            if (input.equals("1")) return TacoSize.SINGLE;
+            if (input.equals("2")) return TacoSize.THREE;
+            if (input.equals("3")) return TacoSize.BURRITO;
+            System.out.println("Invalid choice. Enter 1, 2, or 3.");
         }
-
     }
-    // promptForMeats:
-    //   - possible loop (one or multiple meats?):
-    //       - ask user to type of meat (or 'done' to finish)
-    //       - ask if they want Extra meat? (yes or no)
-    //   - return list of meats and extras
-    // Example price chart embedded in each menu (adjust values to your canonical chart)
-    public List<Toppings> promptForMeats(TacoSize size) {
-        List<Toppings> meats = new ArrayList<>();
-        System.out.println("🥩 Choose meats (type number or name). Type 'done' when finished.");
 
-        LinkedHashMap<Integer, String> meatMenu = new LinkedHashMap<>();
+    // PROMPT FOR MEATS (uses HashMap for menu)
+    public static List<Toppings> promptForMeats() {
+        List<Toppings> meats = new ArrayList<>();
+        HashMap<Integer, String> meatMenu = new HashMap<Integer, String>();
         meatMenu.put(1, "Carnitas");
         meatMenu.put(2, "Al Pastor");
         meatMenu.put(3, "Carne Asada");
         meatMenu.put(4, "Chicken");
         meatMenu.put(5, "Chorizo");
 
-        while (true) {
-            System.out.println("-- Meats --");
-            meatMenu.forEach((k, v) -> System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n",
-                    k, v, meatBasePrice(size), meatExtraPrice(size)));
-            System.out.print("> ");
-            String input = myScanner.nextLine().trim();
-            if (input.equalsIgnoreCase("done")) break;
-            if (input.isEmpty()) { System.out.println("Please enter a choice."); continue; }
-
-            String chosenName = null;
-            try {
-                int idx = Integer.parseInt(input);
-                chosenName = meatMenu.get(idx);
-            } catch (NumberFormatException ignored) {
-                for (String name : meatMenu.values()) {
-                    if (name.equalsIgnoreCase(input)) { chosenName = name; break; }
-                }
-            }
-            if (chosenName == null) { System.out.println("Invalid choice. Try again."); continue; }
-
-            System.out.print("Add " + chosenName + " (yes/no)? ");
-            String addResp = myScanner.nextLine().trim();
-            if (!addResp.equalsIgnoreCase("yes") && !addResp.equalsIgnoreCase("y")) {
-                System.out.println("Skipped.");
-                continue;
-            }
-
-            System.out.print("Extra " + chosenName + " (yes/no)? ");
-            String extraResp = myScanner.nextLine().trim();
-            boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
-
-            double price = meatBasePrice(size) + (isExtra ? meatExtraPrice(size) : 0.0);
-            List<String> tags = new ArrayList<>(); tags.add("meat"); if (isExtra) tags.add("extra");
-
-            Toppings topping = new Toppings(chosenName, isExtra, price, ToppingType.MEAT, tags);
-            meats.add(topping);
-            System.out.println("Added: " + topping);
-        }
-        return meats;
+        System.out.println("🥩 Choose meats (type number or name). Type 'done' when finished.");
+        Toppings.meatLogic();
     }
-    }
-    // prompt for cheese
-    public List<Toppings> promptForCheeses(TacoSize size) {
+
+    // PROMPT FOR CHEESES. using hashmap also for the cheese
+    public static List<Toppings> promptForCheeses() {
         List<Toppings> cheeses = new ArrayList<>();
-        LinkedHashMap<Integer, String> cheeseMenu = new LinkedHashMap<>();
+        HashMap<Integer, String> cheeseMenu = new HashMap<Integer, String>();
         cheeseMenu.put(1, "Queso Fresco");
         cheeseMenu.put(2, "Cheddar");
         cheeseMenu.put(3, "Monterey Jack");
@@ -160,53 +109,156 @@ public class Prompts {
         cheeseMenu.put(5, "Vegan Cheese");
 
         System.out.println("🧀 Choose cheeses (type number or name). Type 'done' when finished.");
+        Toppings.cheeseLogic();
+    }
+
+    // PROMPT to remove sauces
+    public static List<Toppings> removeSauces() {
+        List<Toppings> sauces = new ArrayList<Toppings>();
+        HashMap<Integer, String> sauceMenu = new HashMap<Integer, String>();
+        sauceMenu.put(1, "Salsa Verde");
+        sauceMenu.put(2, "Salsa Roja");
+        sauceMenu.put(3, "Chipotle");
+        sauceMenu.put(4, "Habanero (on the sie)");
+        sauceMenu.put(5, "mild (on the side");
+        sauceMenu.put(6,"extra hot (on the side");
+
+        System.out.println("🌶️ Choose sauces. Type number or name to add. Type 'remove' to remove an added sauce. Type 'done' when finished.");
+
         while (true) {
-            cheeseMenu.forEach((k, v) -> System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n",
-                    k, v, cheeseBasePrice(size), cheeseExtraPrice(size)));
+            System.out.println("\n-- Sauces --");
+            for (Integer k : sauceMenu.keySet()) {
+                System.out.printf("%d) %s%n", k, sauceMenu.get(k));
+            }
+
+            if (sauces.isEmpty()) {
+                System.out.println("Selected: (none)");
+            } else {
+                System.out.print("Selected: ");
+                for (int i = 0; i < sauces.size(); i++) {
+                    System.out.print((i + 1) + ":" + sauces.get(i).getName());
+                    if (i < sauces.size() - 1) System.out.print(", ");
+                }
+                System.out.println();
+            }
+
             System.out.print("> ");
             String input = myScanner.nextLine().trim();
             if (input.equalsIgnoreCase("done")) break;
-            if (input.isEmpty()) { System.out.println("Please enter a choice."); continue; }
+
+            if (input.equalsIgnoreCase("remove")) {
+                if (sauces.isEmpty()) {
+                    System.out.println("No sauces to remove.");
+                    continue;
+                }
+                System.out.print("Type the number or name of the sauce to remove (or 'cancel'): ");
+                String rem = myScanner.nextLine().trim();
+                if (rem.equalsIgnoreCase("cancel")) {
+                    System.out.println("Remove cancelled.");
+                    continue;
+                }
+                boolean removed = false;
+                try {
+                    int idx = Integer.parseInt(rem) - 1;
+                    if (idx >= 0 && idx < sauces.size()) {
+                        Toppings removedT = sauces.remove(idx);
+                        System.out.println("Removed: " + removedT.getName());
+                        removed = true;
+                    }
+                } catch (NumberFormatException e) {
+                }
+                if (!removed) {
+                    Iterator<Toppings> it = sauces.iterator();
+                    while (it.hasNext()) {
+                        Toppings t = it.next();
+                        if (t.getName().equalsIgnoreCase(rem)) {
+                            it.remove();
+                            System.out.println("Removed: " + t.getName());
+                            removed = true;
+                            break;
+                        }
+                    }
+                }
+                if (!removed) System.out.println("No matching sauce found to remove.");
+                continue;
+            }
+
+            if (input.isEmpty()) {
+                System.out.println("Please enter a choice.");
+                continue;
+            }
 
             String chosen = null;
-            try { chosen = cheeseMenu.get(Integer.parseInt(input)); }
-            catch (Exception ignored) {
-                for (String name : cheeseMenu.values()) if (name.equalsIgnoreCase(input)) { chosen = name; break; }
+            try {
+                int idx = Integer.parseInt(input);
+                chosen = sauceMenu.get(idx);
+            } catch (NumberFormatException e) {
+                for (Integer k : sauceMenu.keySet()) {
+                    String v = sauceMenu.get(k);
+                    if (v.equalsIgnoreCase(input)) {
+                        chosen = v;
+                        break;
+                    }
+                }
             }
-            if (chosen == null) { System.out.println("Invalid choice. Try again."); continue; }
+            if (chosen == null) {
+                System.out.println("Invalid choice. Try again.");
+                continue;
+            }
 
-            System.out.print("Extra " + chosen + " (yes/no)? ");
-            boolean isExtra = myScanner.nextLine().trim().equalsIgnoreCase("yes");
-            double price = cheeseBasePrice(size) + (isExtra ? cheeseExtraPrice(size) : 0.0);
-            List<String> tags = new ArrayList<>(); tags.add("cheese"); if (isExtra) tags.add("extra");
-            cheeses.add(new Toppings(chosen, isExtra, price, ToppingType.CHEESE, tags));
-            System.out.println("Added: " + cheeses.get(cheeses.size()-1));
+            boolean already = false;
+            for (Toppings t : sauces) {
+                if (t.getName().equalsIgnoreCase(chosen)) {
+                    already = true;
+                    break;
+                }
+            }
+
+            if (already) {
+                System.out.print(chosen + " is already selected. Remove it? (yes/no): ");
+                String y = myScanner.nextLine().trim();
+                if (y.equalsIgnoreCase("yes") || y.equalsIgnoreCase("y")) {
+                    Iterator<Toppings> it = sauces.iterator();
+                    while (it.hasNext()) {
+                        Toppings t = it.next();
+                        if (t.getName().equalsIgnoreCase(chosen)) {
+                            it.remove();
+                            System.out.println("Removed: " + chosen);
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println("Kept: " + chosen);
+                }
+                continue;
+            }
+
+            // sauces are included (price 0)
+            Toppings topping = new Toppings(chosen, false, 0.0, ToppingType.SAUCE, new ArrayList<String>());
+            sauces.add(topping);
+            System.out.println("Added: " + chosen);
         }
-        return cheeses;
+        return sauces;
     }
-    // prompt for sauce
-    public List<Toppings> promptForSauces() {
-        List<Toppings> sauces = new ArrayList<>();
-        Map<Integer, String> sauceNames = Map.of(
-                1, "Salsa Verde",
-                2, "Salsa Roja",
-                3, "Chipotle Mayo",
-                4, "Crema",
-                5, "Pico de Gallo"
-        );
-        Map<String, Double> saucePrice = Map.of(
-                "Salsa Verde", 0.0,
-                "Salsa Roja", 0.0,
-                "Chipotle Mayo", 0.25,
-                "Crema", 0.25,
-                "Pico de Gallo", 0.0
-        );
 
-        System.out.println("🌶️ Choose sauces (type number or name). Type 'done' when finished.");
+    // PROMPT FOR SIDES (uses Toppings as side items)
+    public static List<Toppings> promptForSides() {
+        List<Toppings> sides = new ArrayList<Toppings>();
+        HashMap<Integer, String> sideMenu = new HashMap<Integer, String>();
+        sideMenu.put(1, "Chips");
+        sideMenu.put(2, "Soda");
+
+        HashMap<String, Double> sidePrices = new HashMap<String, Double>();
+        sidePrices.put("Chips", 1.50);
+        sidePrices.put("Soda, starting at ",2.00);
+
+        System.out.println("🥤🥔 Choose sides (type number or name). Type 'done' when finished.");
         while (true) {
-            System.out.println("-- Sauces --");
-            sauceNames.forEach((k, v) -> System.out.printf("%d) %s (+$%.2f)%n", k, v, saucePrice.get(v)));
-            System.out.print("> ");
+            System.out.println("\n-- Sides --");
+            for (Integer k : sideMenu.keySet()) { // method to see the all the "keys" in the map
+                String name = sideMenu.get(k);
+                System.out.printf("%d) %s ($%.2f)%n", k, name, sidePrices.get(name));
+            }
             String input = myScanner.nextLine().trim();
             if (input.equalsIgnoreCase("done")) break;
             if (input.isEmpty()) {
@@ -217,45 +269,100 @@ public class Prompts {
             String chosenName = null;
             try {
                 int idx = Integer.parseInt(input);
-                chosenName = sauceNames.get(idx);
-            } catch (NumberFormatException ignored) {
-                for (String name : sauceNames.values()) {
-                    if (name.equalsIgnoreCase(input)) {
-                        chosenName = name;
+                chosenName = sideMenu.get(idx);
+            } catch (NumberFormatException e) {
+                for (Integer k : sideMenu.keySet()) {
+                    String v = sideMenu.get(k);
+                    if (v.equalsIgnoreCase(input)) {
+                        chosenName = v;
                         break;
                     }
                 }
             }
+
             if (chosenName == null) {
                 System.out.println("Invalid choice. Try again.");
                 continue;
             }
 
-            double price = saucePrice.getOrDefault(chosenName, 0.0);
-            List<String> tags = List.of("sauce");
-
-            Toppings topping = new Toppings(chosenName, false, price, ToppingType.SAUCE, new ArrayList<>(tags));
-            sauces.add(topping);
-            System.out.println("Added: " + topping);
+            double price = sidePrices.getOrDefault(chosenName, 0.0);
+            List<String> tags = new ArrayList<String>();
+            tags.add("side");
+            Toppings side = new Toppings(chosenName, false, price, ToppingType.EXTRA, tags);
+            sides.add(side);
+            System.out.println("Added: " + chosenName + " ($" + String.format("%.2f", price) + ")");
         }
-        return sauces;
-    }
-    // prompt for deletion of toppings if desired.
-
-
-
         return sides;
-        // prompt for drinks
-        public String promptForDrinkSize() {
-            System.out.println("🥤 Choose drink size: 1) Small ($2.00) 2) Medium ($2.50) 3) Large ($3.00)");
-            while (true) {
-                String input = myScanner.nextLine().trim();
-                switch (input) {
-                    case "1", "small" -> { return "Small"; }
-                    case "2", "medium" -> { return "Medium"; }
-                    case "3", "large" -> { return "Large"; }
-                    default -> System.out.println("Invalid choice. Try again.");
-                }
+    }
+
+    // PROMPT FOR DRINK SIZE
+    public static String promptForDrinkSize() {
+        System.out.println("🥤 Choose drink size: 1) Small ($2.00) 2) Medium ($2.50) 3) Large ($3.00)");
+        while (true) {
+            String input = myScanner.nextLine().trim();
+            if (input.equals("1") || input.equalsIgnoreCase("small")) return "Small";
+            if (input.equals("2") || input.equalsIgnoreCase("medium")) return "Medium";
+            if (input.equals("3") || input.equalsIgnoreCase("large")) return "Large";
+            System.out.println("Invalid choice. Try again.");
+        }
+    }
+
+    // prompt for drink and add to order
+    public static void promptForDrink() {
+        String sizeLabel = promptForDrinkSize();
+        System.out.print("Enter drink name (e.g., Soda): ");
+        String name = myScanner.nextLine().trim();
+        double price = Pricing.drinkPrice(sizeLabel);
+        Drink d = new Drink(name, price);
+        this.currentOrder.addDrink(d);
+        System.out.println("Added drink: " + name + " ($" + String.format("%.2f", price) + ")");
+    }
+
+    // prompt for chips and Salsa add to order
+    public static void promptForChips() {
+        System.out.println("Choose chips size: 1) Small ($1.50) 2) Large ($2.50)");
+        while (true) {
+            String input = myScanner.nextLine().trim();
+            if (input.equals("1")) {
+                Chips c = new Chips("Chips and salsa ", 1.50);
+                this.currentOrder.addChips(c);
+                System.out.println("Added: Chips and salsa");
+                return;
+            } else {
+                System.out.println("Invalid choice. Enter 1 or 2.");
             }
         }
-    }}
+    }
+
+    // checkout: show order summary and save receipt (if ReceiptWriter exists)
+    public void checkout() {
+        System.out.println("\n🧾 Order Summary:");
+        System.out.println(this.currentOrder.getOrderSummary());
+
+        while (true) {
+            System.out.println("Would you like to:");
+            System.out.println("1) Confirm and save receipt");
+            System.out.println("2) Cancel and discard order");
+            System.out.print("> ");
+            String input = myScanner.nextLine().trim();
+
+            switch (input) {
+                case "1":
+                    try {
+                        Utilities.ReceiptWriter.saveReceipt(this.currentOrder);
+                        System.out.println("✅ Receipt saved. Returning to home screen.");
+                    } catch (Exception e) {
+                        System.out.println("⚠️ Could not save receipt: " + e.getMessage());
+                    }
+                    this.currentOrder = new Order(); // reset for next customer
+                    return; // back to home
+                case "2":
+                    System.out.println("❌ Order discarded. Returning to home screen.");
+                    this.currentOrder = new Order(); // discard and reset
+                    return;
+                default:
+                    System.out.println("Invalid input. Please enter 1 or 2.");
+            }
+        }
+    }
+}
