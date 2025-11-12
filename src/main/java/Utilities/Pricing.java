@@ -3,7 +3,7 @@ package Utilities;
 import models.TacoSize;
 
 public class Pricing {
-    private double meatBasePrice(TacoSize size) {
+    public static double meatBasePrice(TacoSize size) {
         return switch (size) {
             case SINGLE -> 1.00;
             case THREE  -> 2.00;
@@ -11,7 +11,7 @@ public class Pricing {
         };
     }
 
-    private double meatExtraPrice(TacoSize size) {
+    public static double meatExtraPrice(TacoSize size) {
         return switch (size) {
             case SINGLE -> 0.50;
             case THREE  -> 1.00;
@@ -19,7 +19,7 @@ public class Pricing {
         };
     }
 
-    private double cheeseBasePrice(TacoSize size) {
+    public static double cheeseBasePrice(TacoSize size) {
         return switch (size) {
             case SINGLE -> 0.75;
             case THREE  -> 1.50;
@@ -27,14 +27,14 @@ public class Pricing {
         };
     }
 
-    private double cheeseExtraPrice(TacoSize size) {
+    public static double cheeseExtraPrice(TacoSize size) {
         return switch (size) {
             case SINGLE -> 0.30;
             case THREE  -> 0.60;
             case BURRITO-> 0.90;
         };
     }
-    private double drinkPrice(String sizeLabel) {
+    public static double drinkPrice(String sizeLabel) {
         return switch (sizeLabel.toLowerCase()) {
                 case "small"  -> 2.00;
                 case "medium" -> 2.50;

@@ -1,8 +1,6 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.List;
-
  //Represents a taco topping with optional premium pricing and descriptive tags.
  public class Toppings {
      protected String name;
@@ -36,22 +34,9 @@ import java.util.List;
         this.tags = tags;
     }
 
-     // helper: build a taco by calling the prompts above and add to order
-     public void promptForTaco() {
-         TacoSize size = promptForSize();
-         Taco taco = new Taco(size); // assumes Taco constructor sets base price from size
-         List<Toppings> meats = promptForMeats(size);
-         for (Toppings t : meats) taco.addTopping(t);
-         List<Toppings> cheeses = promptForCheeses(size);
-         for (Toppings c : cheeses) taco.addTopping(c);
-         List<Toppings> sauces = promptForSaucesWithRemove();
-         for (Toppings s : sauces) taco.addTopping(s);
-         List<Toppings> extras = promptForSides(); // reuse sides prompt for extras if wanted
-         for (Toppings e : extras) taco.addTopping(e);
-
-         this.currentOrder.addTaco(taco);
-         System.out.println("Added taco: " + taco.getSummary());
-     }
+    public void getType(){
+         Taco.addTopping();
+    }
 
     //getters and setter
     public String getName() {

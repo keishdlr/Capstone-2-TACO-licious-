@@ -1,5 +1,7 @@
 package Utilities;
 
+import models.Order;
+
 public class ReceiptWriter {
     public static void saveReceipt(Order order) {
           String generateTimestamp;

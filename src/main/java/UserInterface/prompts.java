@@ -68,6 +68,7 @@ Scanner myScanner = new Scanner(System.in);
     public void promptForTaco() {
         TacoSize size = promptForSize();
         Taco taco = new Taco(); // assumes Taco constructor sets base price from size
+        String tortilla = promptForTortillaType();
         List<Toppings> meats = promptForMeats(size);
         for (Toppings t : meats) taco.addTopping(t);
         List<Toppings> cheeses = promptForCheeses(size);
@@ -76,6 +77,7 @@ Scanner myScanner = new Scanner(System.in);
         for (Toppings s : sauces) taco.addTopping(s);
         List<Toppings> extras = promptForSides(); // reuse sides prompt for extras if wanted
         for (Toppings e : extras) taco.addTopping(e);
+        boolean deepFried = promptForDeepFried();
 
         this.currentOrder.addTaco(taco);
         System.out.println("Added taco: " + taco.getSummary());
@@ -83,9 +85,9 @@ Scanner myScanner = new Scanner(System.in);
         // PROMPT SIZE
         public TacoSize promptForSize() {
             System.out.println("🌮 Choose your taco size:");
-            System.out.println("1) Single Taco ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.SINGLE)) + ")");
-            System.out.println("2) 3-Taco Plate ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.THREE)) + ")");
-            System.out.println("3) Burrito ($" + String.format("%.2f", Pricing.tacoBasePrice(TacoSize.BURRITO)) + ")");
+            System.out.println("1) Single Taco ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.SINGLE)) + ")");
+            System.out.println("2) 3-Taco Plate ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.THREE)) + ")");
+            System.out.println("3) Burrito ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.BURRITO)) + ")");
 
             while (true) {
                 String input = myScanner.nextLine().trim();
@@ -96,6 +98,33 @@ Scanner myScanner = new Scanner(System.in);
             }
         }
 
+        public String promptForTortillaType() {
+        System.out.println("🌯 Choose your tortilla type:");
+        System.out.println("1) Corn");
+        System.out.println("2) Flour");
+        System.out.println("3) Hard Shell");
+        System.out.println("4) Bowl (no tortilla)");
+
+        while (true) {
+            String input = myScanner.nextLine().trim();
+            switch (input) {
+                case "1":
+                case "corn":
+                    return "Corn";
+                case "2":
+                case "flour":
+                    return "Flour";
+                case "3":
+                case "hard shell":
+                    return "Hard Shell";
+                case "4":
+                case "bowl":
+                    return "Bowl";
+                default:
+                    System.out.println("Invalid choice. Please enter 1–4 or type the name.");
+            }
+        }
+    }
         // PROMPT FOR MEATS (uses HashMap for menu)
         public List<Toppings> promptForMeats(TacoSize size) {
             List<Toppings> meats = new ArrayList<>();
@@ -154,7 +183,7 @@ Scanner myScanner = new Scanner(System.in);
                 String extraResp = myScanner.nextLine().trim();
                 boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
 
-                double price = Pricing.baseMeatPrice(size) + (isExtra ? Pricing.extraMeatPrice(size) : 0.0);
+                double price = Pricing.meatBasePrice(size) + (isExtra ? Pricing.meatExtraPrice(size) : 0.0);
                 List<String> tags = new ArrayList<String>();
                 tags.add("meat");
                 if (isExtra) tags.add("extra");
@@ -182,7 +211,7 @@ Scanner myScanner = new Scanner(System.in);
                 for (Integer k : cheeseMenu.keySet()) {
                     String name = cheeseMenu.get(k);
                     System.out.printf("%d) %s (base $%.2f; extra +$%.2f)%n", k, name,
-                            Pricing.baseCheesePrice(size), Pricing.extraCheesePrice(size));
+                            Pricing.cheeseBasePrice(size), Pricing.cheeseExtraPrice(size));
                 }
                 System.out.print("> ");
                 String input = myScanner.nextLine().trim();
@@ -222,7 +251,7 @@ Scanner myScanner = new Scanner(System.in);
                 String extraResp = myScanner.nextLine().trim();
                 boolean isExtra = extraResp.equalsIgnoreCase("yes") || extraResp.equalsIgnoreCase("y");
 
-                double price = Pricing.baseCheesePrice(size) + (isExtra ? Pricing.extraCheesePrice(size) : 0.0);
+                double price = Pricing.cheeseBasePrice(size) + (isExtra ? Pricing.cheeseExtraPrice(size) : 0.0);
                 List<String> tags = new ArrayList<String>();
                 tags.add("cheese");
                 if (isExtra) tags.add("extra");
@@ -455,6 +484,17 @@ Scanner myScanner = new Scanner(System.in);
                 }
             }
         }
+
+        public boolean promptForDeepFried() {
+        System.out.println("Would you like your taco deep-fried? (yes/no)");
+
+        while (true) {
+            String input = myScanner.nextLine().trim().toLowerCase();
+            if (input.equals("yes") || input.equals("y")) return true;
+            if (input.equals("no") || input.equals("n")) return false;
+            System.out.println("Please enter 'yes' or 'no'.");
+        }
+    }
 
         // checkout: show order summary and save receipt (if ReceiptWriter exists)
         public void checkout() {

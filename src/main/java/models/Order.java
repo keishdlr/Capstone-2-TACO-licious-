@@ -7,11 +7,16 @@ import java.util.List;
 public class Order implements Valuable {
     // create List for order items (taco, drinks, and chips)
     private List<Taco> tacos = new ArrayList<>();
-    private List<Drinks> drinks = new ArrayList<>();
+    private List<Drink> drinks = new ArrayList<>();
     private List<ChipsAndSalsa> chips = new ArrayList<>();
 
     // constructor:
     //   - initialize the class properties
+    public Order() {
+        this.tacos = new ArrayList<>();
+        this.drinks = new ArrayList<>();
+        this.chips = new ArrayList<>();
+    }
 
     // addTaco method:
     // - add Taco to list
@@ -20,7 +25,7 @@ public class Order implements Valuable {
     }
     // addDrink method:
     //   - add drink to list
-    public void addDrink(Drinks drink) {
+    public void addDrink(Drink drink) {
         drinks.add(drink);
     }
     // addChips method:
@@ -35,7 +40,7 @@ public class Order implements Valuable {
         // getTaco, getDrinks, getChips:
         //   - return the orders items
         return tacos.stream().mapToDouble(Taco::getPrice).sum()
-                + drinks.stream().mapToDouble(Drinks::getPrice).sum()
+                + drinks.stream().mapToDouble(Drink::getPrice).sum()
                 + chips.stream().mapToDouble(ChipsAndSalsa::getPrice).sum();
     }
     // getOrderSummary method:
