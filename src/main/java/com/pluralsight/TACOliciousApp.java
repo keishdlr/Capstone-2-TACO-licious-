@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import UserInterface.Prompts;
+
 import java.time.LocalTime;
 
 public class TACOliciousApp {
@@ -22,5 +24,5 @@ public class TACOliciousApp {
 
     }
     Prompts prompts = new Prompts();
-    prompts.showHomeScreen();
+    prompts.Prompts();
 }
