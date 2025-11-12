@@ -34,13 +34,4 @@ public class Pricing {
             case BURRITO-> 0.90;
         };
     }
-    public static double drinkPrice(String sizeLabel) {
-        return switch (sizeLabel.toLowerCase()) {
-                case "small"  -> 2.00;
-                case "medium" -> 2.50;
-                case "large"  -> 3.00;
-                default -> 0.0;
-        };
-    }
-
 }

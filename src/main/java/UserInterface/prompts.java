@@ -33,6 +33,7 @@ public class prompts {
     // ORDER MENU
     public void showOrderMenu() {
         while (true) {
+            System.out.println("What would you like to Order?");
             System.out.println("-----Order Menu-----");
             System.out.println("    1) Add Taco           ");
             System.out.println("    2) Add Drink          ");
@@ -87,9 +88,16 @@ public class prompts {
     // PROMPT SIZE
     public TacoSize promptForSize() {
         System.out.println("🌮 Choose your taco size:");
-        System.out.println("1) Single Taco ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.SINGLE)) + ")");
-        System.out.println("2) 3-Taco Plate ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.THREE)) + ")");
-        System.out.println("3) Burrito ($" + String.format("%.2f", Pricing.meatBasePrice(TacoSize.BURRITO)) + ")");
+        double pricesingle = TacoSize.SINGLE.getBasePrice();
+        int caloriessingle = TacoSize.SINGLE.getCalories();
+        System.out.printf("1) Single Taco ($%.2f, %d cal)%n", pricesingle, caloriessingle);
+        double pricethree = TacoSize.THREE.getBasePrice();
+        int caloriesthree = TacoSize.THREE.getCalories();
+        System.out.printf("2) 3-Taco Plate ($%.2f, %d cal)%n", pricethree, caloriesthree);
+        double priceb = TacoSize.BURRITO.getBasePrice();
+        int caloriesb = TacoSize.BURRITO.getCalories();
+        System.out.printf("3) Burrito ($%.2f, %d cal)%n", priceb, caloriesb);
+
         while (true) {
             String input = myScanner.nextLine().trim();
             if (input.equals("1")) return TacoSize.SINGLE;
@@ -315,6 +323,7 @@ public class prompts {
     public void checkout () {
         System.out.println("\n🧾 Order Summary:");
         System.out.println(this.currentOrder.getOrderSummary());
+        myScanner.nextLine();
         while (true) {
             System.out.println("Would you like to:");
             System.out.println("1) Confirm Order and save receipt");

@@ -25,8 +25,6 @@ public class TACOliciousApp {
         System.out.println("Welcome to the Seven Serpent Taco shop");
         prompts prompts = new prompts();  //  create an instance
         prompts.showHomeScreen();         //  call the entry method
-
-        System.out.println("What would you like to Order?");
         prompts.showOrderMenu();
         prompts.promptForTaco();
         prompts.checkout();
