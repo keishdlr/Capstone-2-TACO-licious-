@@ -15,19 +15,22 @@ public class ReceiptWriter {
     public static void saveReceipt(Order order) {
         // Create timestamp string using a formatter
         // return that string
-        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String Timestamp = LocalDateTime.now().format(formatter1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss");
+        String timestamp = LocalDateTime.now().format(formatter);
 
         // generate filename using current date/time (yyyyMMdd-HHmmss.txt)
         // Format 1: 2023-09-06 12:42:20
         //DateTimeFormatter formatter5 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String filename = "receipt-" + Timestamp + ".txt";
+        String filename = "receipt-" + timestamp + ".txt";
         String folder = "src/main/resources/receipts/";
         File file = new File(folder + filename);
 
         try (FileWriter writer = new FileWriter(file)) { // create a FileWriter and wrap in BufferedWriter (src/main/resources/receipts)
             // loop through all order items
             //   - write the items to the to receipt
+            writer.write("🧾 Seven Serpent Taco Shop Receipt\n");
+            writer.write("Date: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "\n\n");
+            writer.write("------------------------------\n");
             // Tacos
             writer.write("🌮 Tacos:\n");
             for (Taco taco : order.getTacos()) {

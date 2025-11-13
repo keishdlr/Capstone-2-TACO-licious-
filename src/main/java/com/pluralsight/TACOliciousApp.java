@@ -20,7 +20,23 @@ public class TACOliciousApp {
         } else {
             greeting = "Good night 🌙";
         }
-        System.out.println(greeting);
+        System.out.println("    Y\n" +
+                "  .-^-.\n" +
+                " /     \\      .- ~ ~ -.\n" +
+                "()     ()    /   _ _   `.                     _ _ _\n" +
+                " \\_   _/    /  /     \\   \\                . ~  _ _  ~ .\n" +
+                "   | |     /  /       \\   \\             .' .~       ~-. `.\n" +
+                "   | |    /  /         )   )           /  /             `.`.\n" +
+                "   \\ \\_ _/  /         /   /           /  /                `'\n" +
+                "    \\_ _ _.'         /   /           (  (\n" +
+                "                    /   /             \\  \\\n" +
+                "                   /   /               \\  \\\n" +
+                "                  /   /                 )  )\n" +
+                "                 (   (                 /  /\n" +
+                "                  `.  `.             .'  /\n" +
+                "                    `.   ~ - - - - ~   .'\n" +
+                "                       ~ . _ _ _ _ . ~");
+        System.out.println("          " + greeting);
 
         System.out.println("Welcome to the Seven Serpent Taco shop");
         prompts prompts = new prompts();  //  create an instance

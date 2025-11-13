@@ -21,8 +21,8 @@ public class prompts {
                     this.currentOrder = new Order();
                     showOrderMenu();
                     break;
-                case "2":
-                    System.out.println("Come again!");
+                case "0":
+                    System.out.println("Maybe next time!");
                     System.exit(0);
                     break;
                 default:
@@ -71,7 +71,7 @@ public class prompts {
     // helper: build a taco by calling the prompts above and add to order
     public void promptForTaco() {
         TacoSize size = promptForSize();
-        Taco taco = new Taco(size); // assuming constructor uses size
+        Taco taco = new Taco(size);
         Tortilla tortilla = promptForTortillaType();
         taco.setTortilla(tortilla);
         List<Toppings> meats = promptForMeats(size);
@@ -100,9 +100,17 @@ public class prompts {
 
         while (true) {
             String input = myScanner.nextLine().trim();
-            if (input.equals("1")) return TacoSize.SINGLE;
-            if (input.equals("2")) return TacoSize.THREE;
-            if (input.equals("3")) return TacoSize.BURRITO;
+            switch (input) {
+                case "1" -> {
+                    return TacoSize.SINGLE;
+                }
+                case "2" -> {
+                    return TacoSize.THREE;
+                }
+                case "3" -> {
+                    return TacoSize.BURRITO;
+                }
+            }
             System.out.println("Invalid choice. Enter 1, 2, or 3.");
         }
     }
@@ -135,7 +143,7 @@ public class prompts {
     // MEATS (uses HashMap for menu)
     public List<Toppings> promptForMeats(TacoSize size) {
         List<Toppings> meats = new ArrayList<>();
-        HashMap<Integer, String> meatMenu = new HashMap<Integer, String>();
+        HashMap<Integer, String> meatMenu = new HashMap<>();
         meatMenu.put(1, "Carnitas");
         meatMenu.put(2, "Al Pastor");
         meatMenu.put(3, "Carne Asada");
@@ -173,7 +181,7 @@ public class prompts {
     // CHEESES. using hashmap also for the cheese
     public List<Toppings> promptForCheeses(TacoSize size) {
         List<Toppings> cheeses = new ArrayList<>();
-        HashMap<Integer, String> cheeseMenu = new HashMap<Integer, String>();
+        HashMap<Integer, String> cheeseMenu = new HashMap<>();
         cheeseMenu.put(1, "Queso Fresco");
         cheeseMenu.put(2, "Cheddar");
         cheeseMenu.put(3, "Monterey Jack");
@@ -259,7 +267,7 @@ public class prompts {
         }
         return sauces;
     }
-    // Deep fried
+    // Deep-fried
     public boolean promptForDeepFried() {
         while (true) {
             System.out.println("Would you like your taco deep-fried? (yes/no)");
@@ -272,20 +280,30 @@ public class prompts {
     public String promptForDrinkSize(Scanner myScanner) {
         System.out.println("🥤 Choose drink size: 1) Small ($2.00) 2) Medium ($2.50) 3) Large ($3.00)");
         String input = myScanner.nextLine().trim();
+
+        String result;
         switch (input.toLowerCase()) {
             case "1":
             case "small":
-                return "Small";
+                result = "Added a Small drink to your order";
+                System.out.println(result);
+                break;
             case "2":
             case "medium":
-                return "Medium";
+                result = "Added a Medium drink to your order";
+                System.out.println(result);
+                break;
             case "3":
             case "large":
-                return "Large";
+                result = "Added a Large drink to your order";
+                System.out.println(result);
+                break;
             default:
                 System.out.println("Invalid choice. Try again.");
                 return promptForDrinkSize(myScanner); // recursive retry
         }
+        System.out.println("Would you like to order anything else?");
+        return result;
     }
     public void promptForChips () {
         System.out.print("Would you like chips and salsa on the side? (yes/no): ");
@@ -297,8 +315,8 @@ public class prompts {
         } else {
             System.out.println("No chips added.");
         }}
-    public Taco promptForSignatureMenu() {
-        System.out.println("🌮 Choose a Signature Taco:");
+    public void promptForSignatureMenu() {
+        System.out.println("🌮 Choose a Signature Item:");
         for (int i = 0; i < SignatureMenuOptions.values().length; i++) {
             System.out.println((i + 1) + ") " + formatName(SignatureMenuOptions.values()[i]));
         }
@@ -307,7 +325,8 @@ public class prompts {
             try {
                 int choice = Integer.parseInt(input);
                 SignatureMenuOptions selected = SignatureMenuOptions.values()[choice - 1];
-                return selected.build();
+                selected.build();
+                return;
             } catch (Exception e) {
                 System.out.println("Invalid choice. Try again.");
             }
@@ -320,25 +339,39 @@ public class prompts {
         };
     }
     // checkout: show order summary and save receipt (if ReceiptWriter exists)
-    public void checkout () {
+    public void checkout() {
         System.out.println("\n🧾 Order Summary:");
         System.out.println(this.currentOrder.getOrderSummary());
-        myScanner.nextLine();
+
         while (true) {
-            System.out.println("Would you like to:");
-            System.out.println("1) Confirm Order and save receipt");
-            System.out.println("2) Cancel and discard order");
+            System.out.println("\nWould you like to:");
+            System.out.println("1) ✅ Confirm Order and save receipt");
+            System.out.println("2) ❌ Cancel and discard order");
+            System.out.print("Enter your choice: ");
+
             String input = myScanner.nextLine().trim();
             switch (input) {
                 case "1":
                     try {
                         Utilities.ReceiptWriter.saveReceipt(this.currentOrder);
-                        System.out.println("✅ Receipt saved. How would you like a copy? (print,text).");
+                        System.out.println("✅ Receipt saved!");
+
+                        System.out.print("Would you like a copy via print or text? ");
+                        String copyChoice = myScanner.nextLine().trim().toLowerCase();
+                        if (copyChoice.equals("print")) {
+                            System.out.println("🖨️ Printing receipt...");
+                            // stub: trigger print logic
+                        } else if (copyChoice.equals("text")) {
+                            System.out.println("📱 Texting receipt...");
+                            // stub: trigger text logic
+                        } else {
+                            System.out.println("⚠️ Unknown option. No copy sent.");
+                        }
                     } catch (Exception e) {
                         System.out.println("⚠️ Could not save receipt: " + e.getMessage());
                     }
                     this.currentOrder = new Order(); // reset for next customer
-                    return; // back to home
+                    return;
                 case "2":
                     System.out.println("❌ Order discarded. Returning to home screen.");
                     this.currentOrder = new Order(); // discard and reset

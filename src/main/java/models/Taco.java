@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 public class Taco implements TacoCan, Valuable {
     //properties
     private Tortilla tortilla;
-    private TacoSize size;
-    private List<Toppings> meats = new ArrayList<>();
-    private List<Toppings> cheeses = new ArrayList<>();
-    private List<Toppings> sauces = new ArrayList<>();
-    private List<Toppings> toppings = new ArrayList<>(); // master list for all toppings
+    private final TacoSize size;
+    private final List<Toppings> meats;
+    private final List<Toppings> cheeses = new ArrayList<>();
+    private final List<Toppings> sauces = new ArrayList<>();
+    private final List<Toppings> toppings = new ArrayList<>(); // master list for all toppings
     private double totalPrice;
     private boolean deepFried;
     // constructor
@@ -33,10 +33,7 @@ public class Taco implements TacoCan, Valuable {
     }
 
     //getters and setters
-    public Tortilla getTortilla() { return tortilla; }
     public TacoSize getSize() { return size; }
-    public double getTotalPrice() { return totalPrice; }
-    public boolean isDeepFried() { return deepFried; }
     public void setDeepFried(boolean deepFried) { this.deepFried = deepFried; }
 
     //contracts from TacoCan
