@@ -56,7 +56,7 @@ public class prompts {
                 case "4":
                     promptForSignatureMenu();
                     break;
-                case "":
+                case "5":
                     checkout();
                     break;
                 case "0":
@@ -285,16 +285,19 @@ public class prompts {
         switch (input.toLowerCase()) {
             case "1":
             case "small":
+                currentOrder.addDrink(new Drink("Small", 2.00));
                 result = "Added a Small drink to your order";
                 System.out.println(result);
                 break;
             case "2":
             case "medium":
+                currentOrder.addDrink(new Drink("Medium", 2.50));
                 result = "Added a Medium drink to your order";
                 System.out.println(result);
                 break;
             case "3":
             case "large":
+                currentOrder.addDrink(new Drink("Large", 3.00));
                 result = "Added a Large drink to your order";
                 System.out.println(result);
                 break;
@@ -306,7 +309,7 @@ public class prompts {
         return result;
     }
     public void promptForChips () {
-        System.out.print("Would you like chips and salsa on the side? (yes/no): ");
+        System.out.print("Confirm chips and salsa (yes/no): ");
         String response = myScanner.nextLine().trim();
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
             ChipsAndSalsa c = new ChipsAndSalsa("Chips and salsa", 1.50);
@@ -340,7 +343,6 @@ public class prompts {
     }
     // checkout: show order summary and save receipt (if ReceiptWriter exists)
     public void checkout() {
-        System.out.println("\n🧾 Order Summary:");
         System.out.println(this.currentOrder.getOrderSummary());
 
         while (true) {
@@ -365,12 +367,13 @@ public class prompts {
                             System.out.println("📱 Texting receipt...");
                             System.out.print("Enter your phone number (e.g., +15551234567): ");
                             String phoneNumber = myScanner.nextLine().trim();
-                            String receiptText = this.currentOrder.getOrderSummary();
+                            String receiptText = "🧾 Seven Serpent Taco Shop\nTotal: $" + String.format("%.2f", currentOrder.getPrice()) + "\nThanks for your order!";
                             try {
-                                SMSSender.SmsSender.sendReceipt(phoneNumber, receiptText);
+                                SmsSender.sendReceipt(phoneNumber, receiptText);
                             } catch (Exception e) {
                                 System.out.println("⚠️ Failed to send SMS: " + e.getMessage());
                             }
+
                         } else {
                             System.out.println("⚠️ Unknown option. No copy sent.");
                         }
