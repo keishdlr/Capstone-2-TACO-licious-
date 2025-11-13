@@ -48,8 +48,10 @@ public class ReceiptWriter {
             }
             // write total cost
             // Total
+            writer.write("------------------------------\n");
             writer.write("\n💰 Total: $" + String.format("%.2f", order.getPrice()) + "\n");
             writer.write("\nThank you for visiting Seven Serpent Taco Shop!\n");
+
 
         } catch (IOException e) {
             System.out.println("Error saving receipt: " + e.getMessage());

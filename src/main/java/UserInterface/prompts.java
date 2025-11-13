@@ -360,10 +360,17 @@ public class prompts {
                         String copyChoice = myScanner.nextLine().trim().toLowerCase();
                         if (copyChoice.equals("print")) {
                             System.out.println("🖨️ Printing receipt...");
-                            // stub: trigger print logic
+                            // pretend it prints a receipt
                         } else if (copyChoice.equals("text")) {
                             System.out.println("📱 Texting receipt...");
-                            // stub: trigger text logic
+                            System.out.print("Enter your phone number (e.g., +15551234567): ");
+                            String phoneNumber = myScanner.nextLine().trim();
+                            String receiptText = this.currentOrder.getOrderSummary();
+                            try {
+                                SMSSender.SmsSender.sendReceipt(phoneNumber, receiptText);
+                            } catch (Exception e) {
+                                System.out.println("⚠️ Failed to send SMS: " + e.getMessage());
+                            }
                         } else {
                             System.out.println("⚠️ Unknown option. No copy sent.");
                         }
