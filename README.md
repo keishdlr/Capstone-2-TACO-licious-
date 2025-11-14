@@ -45,7 +45,6 @@ Handles saving and loading taco orders.
 ---
 
 ## 🖼️ Images  
-_Add screenshots to visually showcase your app flow:_
 
 ![Greeting and Menu](Screenshot 2025-11-14 012005)  
 ![Meat Selection](Screenshot 2025-11-14 012154)   
