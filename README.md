@@ -1,44 +1,62 @@
-🌮 TACOlicious Project Structure Overview
-📁 com.pluralsight/
-- TACOliciousApp.java
-Your main entry point. Calls Prompts.showHomeScreen() to start the interactive flow.
+# 🌮 TACOlicious CLI Menu Builder  
+This command-line application allows users to build custom tacos by selecting meats and toppings, tracking calories, and assembling orders using modular Java classes.
 
-📁 models/
-- Taco.java
-Core taco object. Holds size, toppings, and price logic. Implements TacoCan and Valuable.
-- Toppings.java
-Represents individual toppings with name, type, price, tags, and premium status.
-- Order.java
-Holds lists of tacos, drinks, chips. Implements Valuable. Generates order summary and total.
-- SignatureTacos.java
-Predefined taco recipes. Could be static methods or a menu class.
-- Drinks.java
-Represents drink items. Implements Valuable.
-- ChipsAndSalsa.java
-Represents chips. 
-- TacoSize.enum
-Enum for SINGLE, THREE, BURRITO. Holds base prices and calories.
-- ToppingType.enum
-Enum for MEAT, CHEESE, SAUCE, EXTRA, etc.
+---
 
-📁 Utilities/
-- TacoCan.interface
-Interface for taco-like objects. Requires getPrice(), getSummary(), and topping methods.
-- Valuable.interface
-Interface for anything with a price. Used by Taco, Drink, Chips, Order.
-- ReceiptWriter.java
-Saves order summary to a timestamped .txt file. Used during checkout.
+## 🧱 Project Structure  
+Each class in this project has a clear and focused responsibility:
 
-📁 UserInterface/
-- Prompts.java
-Handles all user interaction. Includes:
-- showHomeScreen() and showOrderMenu()
-- promptForSize(), promptForMeats(), promptForCheeses()
-- promptForSaucesWithRemove(), promptForSides(), promptForDrinkSize()
-- promptForSandwich(), promptForDrink(), promptForChips()
-- checkout() with full confirmation flow
+### `Main.java`  
+Handles user interaction and menu logic.
+
+- Customized greeting with name and time of day
+- ASCII art 
+- Displays menu options  
+- Prompts user input and routes to appropiate service  
+
+### `Taco.java`  
+Defines the data model for a taco.
+
+- Fields: meat type, toppings  
+- Groups selected ingredients into a single object  
+- Formats taco details for display  
+
+### `Prompts.java`  
+Manages interactive CLI prompts.
+
+- Collects user input for meats and toppings  
+- Supports side items
+- Validates selections and returns structured data  
+
+### `TacoFactory.java`  
+Assembles tacos 
+
+- Creates Taco objects from user selections     
+
+### `MeatType.java` and `ToppingType.java` (Enums)  
+Encapsulate menu logic. 
+
+### `TacoService.java` *(optional)*  
+Handles saving and loading taco orders.
+
+- Writes taco data to file  
+- Reads previous orders for review  
+
+---
+
+## 🖼️ Images  
+_Add screenshots to visually showcase your app flow:_
+
+![Greeting and Menu](Screenshot 2025-11-14 012005)  
+![Meat Selection](Screenshot 2025-11-14 012154)   
+![Final Taco Summary](Screenshot 2025-11-14 012157, Screenshot 2025-11-14 012414)
+
+---
 
 ## 🧩 Features
 -    Twilio Integration for SMS
 - 🧠 Interactive CLI 
 - 🌮 Enum-based menu items
+- Build custom tacos
+
+
