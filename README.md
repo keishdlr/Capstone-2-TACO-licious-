@@ -1,5 +1,5 @@
 # 🌮 TACOlicious CLI Menu Builder  
-This command-line application allows users to build custom tacos by selecting meats and toppings, tracking calories, and assembling orders using modular Java classes.
+This command-line application allows users to build custom tacos by selecting meats and toppings.
 
 ---
 
